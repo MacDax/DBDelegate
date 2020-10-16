@@ -1,11 +1,9 @@
 package com.spring.boot.framework.dbdelegate.configuration;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Hello world!
- *
- */
+@SpringBootApplication(scanBasePackages={"com.spring"})
 public class Main 
 {
     public static void main( String[] args )

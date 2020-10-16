@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import org.h2.jdbcx.JdbcConnectionPool;
 
@@ -33,5 +34,13 @@ public class DatabaseManager {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public DataSource getDataSource() {
+		return this.dataSource;
+	}
+	
+	public Connection getConnection() throws SQLException {
+		return this.dataSource.getConnection();
 	}
 }
