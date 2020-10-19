@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import com.spring.boot.framework.dbdelegate.configuration.DatabaseManager;
 
 @ManagedBean(value="GetPersonalDataDelegate")
-public class getPersonalDataDelegate {
+public class GetPersonalDataDelegate {
   
 	@Inject
 	private DatabaseManager dbManager;
