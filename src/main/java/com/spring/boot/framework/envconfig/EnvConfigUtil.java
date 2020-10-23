@@ -14,7 +14,8 @@ public class EnvConfigUtil {
 	
 	public static String getAsString(String propertyName, String defaultValue) {
 		config = ConfigProvider.getConfig();
-		return (String)config.getOptionalValue(propertyName, String.class).orElse(defaultValue);
+		return config.getValue(propertyName, String.class);
+		//return (String)config.getOptionalValue(propertyName, String.class).orElse(defaultValue);
 	}
 	
 	/*public static String getAsString(String propName, String defaultValue) {

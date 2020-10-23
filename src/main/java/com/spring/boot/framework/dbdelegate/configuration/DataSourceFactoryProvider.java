@@ -12,14 +12,17 @@ import java.util.Optional;
 import javax.inject.Provider;
 
 import org.h2.jdbcx.JdbcConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.spring.boot.framework.envconfig.EnvConfigUtil;
+import com.spring.boot.personsdb.transactions.PersonalDAO;
 
 @DBQualifier
 public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 
 	private static final String DB_DRIVER = "org.h2.Driver";
-	
+	private static final Logger logger = LoggerFactory.getLogger(DataSourceFactoryProvider.class);
 	
 	public JdbcConnectionPool get() {
 		/*String url = "jdbc:h2:file:E:/GITPROJECTS/personsdb";
@@ -39,12 +42,12 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 		String url = EnvConfigUtil.getAsString("hrservice.api.db.url", "");
 		String username = EnvConfigUtil.getAsString("hrservice.api.db.username", "");
 		String password = EnvConfigUtil.getAsString("hrservice.api.db.password", "");
-		System.out.println("db url : " + url);
+		logger.info("db url : " + url);
 		JdbcConnectionPool cp = JdbcConnectionPool.create(url, username, password);
 		//JdbcConnectionPool cp = JdbcConnectionPool.create("jdbc:h2:file:E:/GITPROJECTS/personsdb", "sa", "sa");
 		 
 		try{
-			System.out.println("cp : " + cp);
+			logger.info("cp : " + cp);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

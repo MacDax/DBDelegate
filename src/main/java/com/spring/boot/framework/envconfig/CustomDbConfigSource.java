@@ -76,17 +76,17 @@ public class CustomDbConfigSource implements ConfigSource {
 		}else {
 			String value = (String)this.properties.get(propertyName);
 			if(value != null) {
-				logger.debug("Environment properties returning > {} ", propertyName, value);
+				logger.info("Config properties returning > {} ", propertyName, value);
 			}
 			while(value != null && value.startsWith("${") && value.endsWith("}")) {
 				value = value.substring(2, value.length() -1 );
 				if(value != null) {
 					value = (String)ConfigProvider.getConfig().getValue(value, String.class);
-					return value;
 				}
 			}
+			return value;
 		}
-		return null;
+		//return null;
 	}
 
 	public Set<String> getPropertyNames() {
