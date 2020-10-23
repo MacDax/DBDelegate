@@ -29,7 +29,9 @@ public class DatabaseManager {
 			//throw th;
 		}finally {
 			try {
-				connection.close();
+				if(null != connection) {
+				 connection.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

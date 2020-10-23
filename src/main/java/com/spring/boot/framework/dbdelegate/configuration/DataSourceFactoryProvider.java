@@ -7,10 +7,13 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 import javax.inject.Provider;
 
 import org.h2.jdbcx.JdbcConnectionPool;
+
+import com.spring.boot.framework.envconfig.EnvConfigUtil;
 
 @DBQualifier
 public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
@@ -19,29 +22,26 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 	
 	
 	public JdbcConnectionPool get() {
-		String url = "jdbc:h2:file:E:/GITPROJECTS/personsdb";
-		
-		//Path dbPath = Paths.get(url);
+		/*String url = "jdbc:h2:file:E:/GITPROJECTS/personsdb";
 		String username = "sa";
 		String password = null;
-		System.out.println("db url : " + url);
+		System.out.println("db url : " + url);*/
 		try{
 			Class.forName(DB_DRIVER);
 		}catch(ClassNotFoundException e) {
 			e.printStackTrace();
 			//throw e;
 		}
-		/*if (!dbPath.toFile().exists()) {
-			System.out.println("Creating database root folder %s" + url);
-			  try {
-				Files.createDirectories(dbPath);
-			} catch (IOException e) {
-				System.out.println("file operation failed : ");
-				e.printStackTrace();
-			}
-			 }*/
-		//JdbcConnectionPool cp = JdbcConnectionPool.create(url, username, password);
-		JdbcConnectionPool cp = JdbcConnectionPool.create("jdbc:h2:file:E:/GITPROJECTS/personsdb", "sa", "sa");
+		/*String url = "jdbc:h2:file:E:/GITPROJECTS/personsdb";
+		String username = "sa";
+		String password = null;
+		System.out.println("db url : " + url);*/
+		String url = EnvConfigUtil.getAsString("hrservice.api.db.url", "");
+		String username = EnvConfigUtil.getAsString("hrservice.api.db.username", "");
+		String password = EnvConfigUtil.getAsString("hrservice.api.db.password", "");
+		System.out.println("db url : " + url);
+		JdbcConnectionPool cp = JdbcConnectionPool.create(url, username, password);
+		//JdbcConnectionPool cp = JdbcConnectionPool.create("jdbc:h2:file:E:/GITPROJECTS/personsdb", "sa", "sa");
 		 
 		try{
 			System.out.println("cp : " + cp);

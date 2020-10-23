@@ -21,11 +21,11 @@
 		<version>2.2.4.RELEASE</version>
 	</parent>
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.geronimo.config</groupId>
 			<artifactId>geronimo-config-impl</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -42,6 +42,13 @@
 			<version>1</version>
 		</dependency>
 
+	<dependency>
+			<groupId>org.eclipse.microprofile.config</groupId>
+			<artifactId>microprofile-config-api</artifactId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
+		</dependency>
+				
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -49,6 +56,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+
 
 	<build>
 		<pluginManagement>
