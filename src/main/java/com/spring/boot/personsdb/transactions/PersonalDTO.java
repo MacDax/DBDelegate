@@ -1,11 +1,14 @@
 package com.spring.boot.personsdb.transactions;
 
+import java.time.LocalDate;
+
 public class PersonalDTO {
 
 	private int id;
 	private String fname;
 	private String lname;
-
+	private LocalDate birthDate;
+	
 	public int getId() {
 		return id;
 	}
@@ -30,4 +33,13 @@ public class PersonalDTO {
 		this.lname = lname;
 	}
 
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	
 }

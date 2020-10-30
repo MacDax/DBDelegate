@@ -1,9 +1,11 @@
 package com.spring.boot.personsdb.transactions;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,14 +67,21 @@ public class PersonalDAO {
 		try {
 			conn = this.dataSource.getConnection();
 			try{
-				String sql = "insert into persons(fname,lname,address,service) values(?,?,?,?)";
+				String sql = "insert into persons(fname,lname,address,birthdate,service) values(?,?,?,?,?)";
 				PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				for(PersonalDTO person : persons) {
 					logger.info("Person data to save in db : " + person.toString());
 					st.setString(1, person.getFname());
 					st.setString(2, person.getLname());
 					st.setString(3, null);
-					st.setString(4, null);
+					if(null != person.getBirthDate()) {
+						LocalDate bd = person.getBirthDate();
+						Date date = Date.valueOf(bd);
+						st.setDate(4, date);
+					}else {
+						st.setDate(4, null);
+					}
+					st.setString(5, null);
 					int update = st.executeUpdate();
 					logger.info("st exe done");
 					ResultSet tableKeys = st.getGeneratedKeys();
