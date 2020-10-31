@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
@@ -47,10 +48,45 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 		//JdbcConnectionPool cp = JdbcConnectionPool.create("jdbc:h2:file:E:/GITPROJECTS/personsdb", "sa", "sa");
 		 
 		try{
-			logger.info("cp : " + cp);
+			logger.info("cp : " + cp.getConnection().getSchema());
+			//logger.info("cp : " + cp.getConnection().getMetaData());
+			String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+			Connection con = cp.getConnection();
+			Statement sqlCon = con.createStatement();
+			ResultSet rs = sqlCon.executeQuery(sql);
+			while(rs.next()) {
+				//logger.info(rs.getString(1));
+				//logger.info(rs.getString(2));
+				logger.info(rs.getString(3));
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+	/*	Connection con = null;
+		try {
+			con = cp.getConnection();
+			Statement sqlDrop = con.createStatement();
+			//String dropSql = "drop table persons";
+			//sqlDrop.execute(dropSql);
+			Statement st = con.createStatement();
+			String sql = "CREATE TABLE services(id INTEGER AUTO_INCREMENT PRIMARY KEY, "
+					+ "servicetype VARCHAR(40) NOT NULL, servicename VARCHAR(80));";
+			
+			String sql = "CREATE TABLE persons(id INTEGER AUTO_INCREMENT PRIMARY KEY, "
+					+ "fname VARCHAR(30) NOT NULL, lname VARCHAR(30), address VARCHAR(120), birthdate DATE, service VARCHAR(100));";
+			
+			boolean success = st.execute(sql);
+			//String insertSQL = "insert into services(servicetype, servicename) values('Driving', 'KidsPickup-Droppoff');";
+			String insertSQL = "insert into persons(fname, lname, address, service) values('Ramesh', 'Mehata', '123 lll', 'KidsPickup-Droppoff');";
+			Statement insertStmt = con.createStatement();
+			boolean success3 = insertStmt.execute(insertSQL);
+			st.close();
+			insertStmt.close();
+			con.close();
+			}catch(Exception ex) {
+				logger.info("ex to create table :" + ex.getMessage());
+			}*/
 		
 		/*Connection con = null;
 		try {

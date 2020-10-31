@@ -15,7 +15,10 @@ public class GetPersonalDataDelegate {
   
 	@Inject
 	private DatabaseManager dbManager;
-	private static final Logger logger = LoggerFactory.getLogger(PersonalDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(GetPersonalDataDelegate.class);
+	
+	
+		
 	public List<PersonalDTO> getPersonsDataList() throws Exception {
 		try{
 			return getPersonalDAO().getPersonsData();
