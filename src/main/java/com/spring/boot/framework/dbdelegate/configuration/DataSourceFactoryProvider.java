@@ -15,6 +15,9 @@ import javax.inject.Provider;
 import org.h2.jdbcx.JdbcConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import com.spring.boot.framework.envconfig.EnvConfigUtil;
 import com.spring.boot.personsdb.transactions.PersonalDAO;
@@ -36,6 +39,7 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 			e.printStackTrace();
 			//throw e;
 		}
+		
 		/*String url = "jdbc:h2:file:E:/GITPROJECTS/personsdb";
 		String username = "sa";
 		String password = null;
@@ -44,6 +48,34 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 		String username = EnvConfigUtil.getAsString("hrservice.api.db.username", "");
 		String password = EnvConfigUtil.getAsString("hrservice.api.db.password", "");
 		logger.info("db url : " + url);
+		
+		
+		/* url = url + 
+	             "INIT=CREATE SCHEMA IF NOT EXISTS hrm\\;" + 
+	                  "SET SCHEMA hrm";*/
+	/* url = url + ";" +
+	             "INIT=RUNSCRIPT FROM '~/schema.sql'\\;" + 
+	                  "RUNSCRIPT FROM '~/data.sql'";*/
+		
+		
+		  /* EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
+                   .setType(EmbeddedDatabaseType.H2)
+                   .setName("testhrmDb;MODE=Oracle;INIT=create " +
+                           "schema if not exists " +
+                           "schema_a\\;create schema if not exists testhrmDb;" +
+                           "DB_CLOSE_DELAY=-1;")
+                   .addScript("schema.sql")
+                   .addScript("data.sql")
+                   .build();*/
+		
+		/*EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .addScript("schema.sql")
+                .addScript("data.sql")
+                .build();
+		
+		System.out.println("db created : " + db);*/
+		
 		JdbcConnectionPool cp = JdbcConnectionPool.create(url, username, password);
 		//JdbcConnectionPool cp = JdbcConnectionPool.create("jdbc:h2:file:E:/GITPROJECTS/personsdb", "sa", "sa");
 		 
@@ -63,7 +95,7 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 			e.printStackTrace();
 		}
 		
-	/*	Connection con = null;
+		/*Connection con = null;
 		try {
 			con = cp.getConnection();
 			Statement sqlDrop = con.createStatement();
@@ -73,22 +105,68 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 			String sql = "CREATE TABLE services(id INTEGER AUTO_INCREMENT PRIMARY KEY, "
 					+ "servicetype VARCHAR(40) NOT NULL, servicename VARCHAR(80));";
 			
-			String sql = "CREATE TABLE persons(id INTEGER AUTO_INCREMENT PRIMARY KEY, "
-					+ "fname VARCHAR(30) NOT NULL, lname VARCHAR(30), address VARCHAR(120), birthdate DATE, service VARCHAR(100));";
+			//String sql = "CREATE TABLE persons(id INTEGER AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(30) NOT NULL, lname VARCHAR(30), birthdate DATE);";
 			
-			boolean success = st.execute(sql);
+			//boolean success = st.execute(sql);
 			//String insertSQL = "insert into services(servicetype, servicename) values('Driving', 'KidsPickup-Droppoff');";
-			String insertSQL = "insert into persons(fname, lname, address, service) values('Ramesh', 'Mehata', '123 lll', 'KidsPickup-Droppoff');";
+			String insertSQL = "insert into persons(fname, lname, birthdate) values('Ethan', 'Patelia', '2010-01-27');";
 			Statement insertStmt = con.createStatement();
 			boolean success3 = insertStmt.execute(insertSQL);
-			st.close();
-			insertStmt.close();
+			//st.close();
+			//insertStmt.close();
+			
+			
+			String sql1 = "CREATE TABLE personscontacts(id INTEGER AUTO_INCREMENT PRIMARY KEY, phonenumber varchar(11), email varchar(30), personId INTEGER, FOREIGN KEY (id) REFERENCES persons(id));";
+			Statement st1 = con.createStatement();
+			boolean success1 = st1.execute(sql1);
+			
+			String sql3 = "CREATE TABLE rolenames(id INTEGER AUTO_INCREMENT PRIMARY KEY, rolename varchar(225));";
+			Statement st3 = con.createStatement();
+			boolean success3 = st3.execute(sql3);
+			
+			String insertRoleNameSQL1 = "insert into rolenames(rolename) values('teacher');";
+			Statement insertRoleNameStmt1 = con.createStatement();
+			boolean success6 = insertRoleNameStmt1.execute(insertRoleNameSQL1);
+			
+			String insertRoleNameSQL2 = "insert into rolenames(rolename) values('student');";
+			Statement insertRoleNameStmt2 = con.createStatement();
+			boolean success5 = insertRoleNameStmt2.execute(insertRoleNameSQL2);
+			
+			String sql2 = "CREATE TABLE personsroles(id INTEGER AUTO_INCREMENT PRIMARY KEY, roleid INTEGER, FOREIGN KEY (id) REFERENCES rolenames(id), personId INTEGER, FOREIGN KEY (id) REFERENCES persons(id));";
+			Statement st2 = con.createStatement();
+			boolean success2 = st2.execute(sql2);
+			
+			String insertRoleSQL1 = "insert into personsroles(roleid, personId) values(1, 1);";
+			Statement insertStmt1 = con.createStatement();
+			boolean success4 = insertStmt1.execute(insertRoleSQL1);
+			
+			String insertRoleSQL2 = "insert into personsroles(roleid, personId) values(2, 33);";
+			Statement insertRoleStmt2 = con.createStatement();
+			boolean success7 = insertRoleStmt2.execute(insertRoleSQL2);
+			
+			String insertSQL1 = "insert into personscontacts(phonenumber, email, personId) values('5104995471', 'Patelia@gmail.com', 1);";
+			Statement insertStmt1 = con.createStatement();
+			boolean success4 = insertStmt1.execute(insertSQL1);
+			
+			String insertSQL2 = "insert into personscontacts(phonenumber, email, personId) values('4804995471', 'pateliaet@gmail.com', 65);";
+			Statement insertStmt2 = con.createStatement();
+			boolean success5 = insertStmt2.execute(insertSQL2);
+			
 			con.close();
 			}catch(Exception ex) {
 				logger.info("ex to create table :" + ex.getMessage());
-			}*/
+			}finally {
+				if(null != con) {
+					try {
+						if(!(con.isClosed())) {
+						con.close();
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				} 
 		
-		/*Connection con = null;
+		Connection con = null;
 		try {
 			con = cp.getConnection();
 			Statement sqlDrop = con.createStatement();
@@ -133,7 +211,9 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 				e.printStackTrace();
 			}
 		} 
-	}*/
+	
+				
+			}*/
 		
 		return cp;
 	}
