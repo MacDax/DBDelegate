@@ -1,3 +1,9 @@
 logging:
    level:
       org.hiernate.SQL: DEBUG
+
+#spring:
+#   h2:
+#      console:
+#         enabled: true 
+#         path: /h2-console
