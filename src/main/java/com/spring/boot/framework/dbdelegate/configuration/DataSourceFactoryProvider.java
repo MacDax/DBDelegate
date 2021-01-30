@@ -196,14 +196,12 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 			//String qsql = "ALTER TABLE exam_questions ADD exquestiontype_id INTEGER";
 			//String qsql = "ALTER TABLE exam_questions  ADD FOREIGN KEY (exquestiontype_id) REFERENCES exquestiontypes(exquestiontype_code);";
 			//String qsql = "ALTER TABLE exam_questions ADD question_txt VARCHAR(733)";
+			//String qsql = "ALTER TABLE exam_questions ADD updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
 			//Statement insertqStmt = con.createStatement();
 			//boolean successq = insertqStmt.execute(qsql);
 			//insertqStmt.close();
 			
-		/*	String qsqlt = "ALTER TABLE exam_questions ADD updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
-			Statement insertqtStmt = con.createStatement();
-			boolean successqt = insertqtStmt.execute(qsqlt);
-			insertqtStmt.close();*/
+		
 			
 			String selectColms = "show columns from exam_questions;";
 			Statement selectColnames = con.createStatement();
@@ -303,11 +301,11 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 				}
 			selectSubSt.close();*/
 			
-		/*	String insertQ = "insert into  exam_questions(subjectcode,teacherid,exquestiontype_id,question_txt) values(102,33,10, 'name of a person is noun');";
+			//String insertQ = "insert into  exam_questions(subjectcode,teacherid,exquestiontype_id,question_txt) values(102,33,50, 'essay about president');";
 			//"insert into  exam_questions(subjectcode, teacherid, exquestiontype_id, question_txt) values(102, 33, 10, 'name of a person is noun');";
-			Statement insertQst = con.createStatement();
-			boolean inq = insertQst.execute(insertQ);
-			insertQst.close();*/
+			//Statement insertQst = con.createStatement();
+			//boolean inq = insertQst.execute(insertQ);
+			//insertQst.close();
 			
 			String selectExQs = "select * from  exam_questions;";
 			Statement selectExSt = con.createStatement();
@@ -319,6 +317,7 @@ public class DataSourceFactoryProvider implements Provider<JdbcConnectionPool>{
 				logger.info("teacherid : " + exsts.getInt("teacherid"));
 				logger.info("exquestiontype_id : " + exsts.getInt("exquestiontype_id"));
 				logger.info("qtype data :" + exsts.getString("question_txt"));
+				logger.info("updated at : " + exsts.getTimestamp("updated_at"));
 			}
 			selectExSt.close();
 			
